@@ -1,0 +1,39 @@
+# Statements in this file will be executed (sourced) by the shell in SSH
+# sessions, in deploy hooks, in cron jobs, and in the application's runtime
+# environment. This file must be placed in the root of the application, not
+# necessarily the git repository's root. In case of multiple applications,
+# each application can have its own .environment file.
+
+# Allow executable app dependencies from Composer to be run from the path.
+if [ -n "$PLATFORM_APP_DIR" -a -f "$PLATFORM_APP_DIR"/composer.json ] ; then
+  bin=$(composer config bin-dir --working-dir="$PLATFORM_APP_DIR" --no-interaction 2>/dev/null)
+  export PATH="${PLATFORM_APP_DIR}/${bin:-vendor/bin}:${PATH}"
+fi
+
+# Next.js variables.
+FRONTEND_URL=$(echo $PLATFORM_ROUTES | base64 --decode | jq -r 'to_entries[] | select (.value.id == "client") | .key')
+stringlen=${#FRONTEND_URL}
+export FRONTEND_URL=$(echo "${FRONTEND_URL}" | awk -v var=$stringlen '{ string=substr($0, 1, var - 1); print string; }' )
+
+# Demo installation variables.
+export WP_SETUP=$PLATFORM_APP_DIR/platformsh-scripts
+export INITIAL_DEMO_SETTINGS=$WP_SETUP/settings.default.json
+export ENV_SETTINGS=$PLATFORM_APP_DIR/deploy/settings.json
+export VARS_LOCAL=$PLATFORM_APP_DIR/deploy/platformsh.env
+export VARS_PSH=$PLATFORM_APP_DIR/deploy/platformsh.environment
+
+# wp-graphql-jwt-authentication plugin needs a php constant GRAPHQL_JWT_AUTH_SECRET_KEY that is a "secret" key
+# we'll use the platform entropy value combined with the platform project ID. If you change this value, you'll need
+# to redeploy the nextjs app so the deploy scripts can recreate the
+export GRAPHQL_JWT_AUTH_SECRET_KEY=$(echo -n "${PLATFORM_PROJECT_ENTROPY}${PLATFORM_PROJECT}" | sha1sum | awk '{print $1}')
+# location on the nextjs frontend where we can preview posts
+# @todo is there a way to dynamically receive this data from the nextjs app?
+export FRONTEND_PREVIEW_LOCATION="${FRONTEND_URL}/api/preview"
+# We need a secret that is shared with both apps to allow for viewing preview posts.
+# @see https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress#step-5-add-authentication-for-preview-mode-optional
+# We want to make sure the secret is different between environments, is URL friendly but otherwise does not need to be
+# ultra secure (from the docs: "any random string"). We'll use a truncated sha1 sum of entropy plus branch name
+export WORDPRESS_PREVIEW_SECRET=$(echo -n "${PLATFORM_PROJECT_ENTROPY}${PLATFORM_BRANCH}" | sha1sum | awk '{string=substr($1,1,20); print string;}')
+#if [ -f $VARS_PSH ]; then
+#	. $VARS_PSH
+#fi

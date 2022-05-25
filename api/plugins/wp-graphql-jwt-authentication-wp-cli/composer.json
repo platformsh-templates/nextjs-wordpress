@@ -1,0 +1,19 @@
+{
+  "name": "gilzow/wp-graphql-jwt-authentication-wp-cli",
+  "description": "wp-cli command for generating and retrieving authentication/refresh tokens using JWT (JSON Web Tokens)",
+  "minimum-stability": "stable",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Paul Gilzow",
+      "email": "paul@gilzow.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0"
+  },
+  "autoload": {
+    "files": [ "graphql-cli-auth.php" ]
+  }
+}

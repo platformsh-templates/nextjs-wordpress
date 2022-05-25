@@ -1,0 +1,72 @@
+{
+  "name": "johnpbloch/wordpress",
+  "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
+  "keywords": [
+    "wordpress",
+    "blog",
+    "cms"
+  ],
+  "type": "package",
+  "homepage": "https://wordpress.org/",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "WordPress Community",
+      "homepage": "https://wordpress.org/about/"
+    }
+  ],
+  "support": {
+    "issues": "https://core.trac.wordpress.org/",
+    "forum": "https://wordpress.org/support/",
+    "docs": "https://developer.wordpress.org/",
+    "irc": "irc://irc.freenode.net/wordpress",
+    "source": "https://core.trac.wordpress.org/browser"
+  },
+  "require": {
+    "php": ">=5.6.20",
+    "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
+    "johnpbloch/wordpress-core": "^5.9.3",
+    "platformsh/config-reader": "^2.4",
+    "wpackagist-theme/twentytwentyone": "^1.5",
+    "wpackagist-theme/twentytwentytwo": "^1.1",
+    "wpackagist-theme/twentytwenty": "^1.9",
+    "wpackagist-plugin/akismet": "^4.2",
+    "wpackagist-plugin/wp-graphql": "^1.8",
+	"wp-graphql/wp-graphql-jwt-authentication": "^0.5.2"
+  },
+  "config": {
+    "allow-plugins": {
+      "johnpbloch/wordpress-core-installer": true,
+      "composer/installers": true
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+	{
+	  "type": "vcs",
+	  "url": "https://github.com/wp-graphql/wp-graphql-jwt-authentication"
+	}
+  ],
+  "scripts": {
+    "subdirComposer": [
+      "cp wp-config.php wordpress/ && rm -rf wordpress/wp-content/wp-content"
+    ],
+    "post-install-cmd": "@subdirComposer"
+  },
+  "extra": {
+    "installer-paths": {
+      "wordpress/wp-content/plugins/{$name}": [
+        "type:wordpress-plugin"
+      ],
+      "wordpress/wp-content/themes/{$name}": [
+        "type:wordpress-theme"
+      ],
+      "wordpress/wp-content/mu-plugins/{$name}": [
+        "type:wordpress-muplugin"
+      ]
+    }
+  }
+}

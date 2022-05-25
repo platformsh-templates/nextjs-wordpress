@@ -1,0 +1,69 @@
+# The name of this app. Must be unique within a project.
+name: nextjs
+
+type: 'nodejs:14'
+
+dependencies:
+  nodejs:
+    yarn: "1.22.17"
+    pm2: "5.2.0"
+
+build:
+  flavor: none
+
+variables:
+  env:
+    NODE_OPTIONS: --max-old-space-size=1536
+    GENERATED_VARS: 'deploy/platformsh.environment'
+
+size: L
+
+resources:
+  base_memory: 1024
+  memory_ratio: 1024
+
+hooks:
+  build: |
+    # Build dependencies.
+    set -e
+    #   a. For the main app.
+    yarn --frozen-lockfile
+
+    # symlink .env.local over to the platformsh.env file
+    ln -sf "${PLATFORM_APP_DIR}"/deploy/platformsh.env "${PLATFORM_APP_DIR}"/.env.local
+  post_deploy: |
+    # we need to kill the node process associated with next so it'll rebuild & restart picking up the new values in .env.local
+    kill -2 $(pgrep -f "/next start")
+
+web:
+  commands:
+    start: |
+      # Maybe since we're foregoing the first deploy, yarn start is good enough.
+      if [ -f "$GENERATED_VARS" ]; then
+          # Source environment variables, build the frontend, and start the server.
+          . $GENERATED_VARS
+          echo "starting app using ${WORDPRESS_PREVIEW_SECRET}"
+          yarn build
+          yarn start
+      else
+          # On the first deploy, display next steps page.
+          node first_deploy.js
+      fi
+
+
+disk: 512
+
+mounts:
+  /.cache:
+    source: local
+    source_path: 'cache'
+  /.next:
+    source: local
+    source_path: 'next'
+  /.pm2:
+    source: local
+    source_path: 'pm2'
+  deploy:
+    source: service
+    service: files
+    source_path: deploy

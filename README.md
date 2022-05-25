@@ -25,7 +25,7 @@
     <a href="https://github.com/platformsh-templates/nextjs-wordpress/issues">
         <img src="https://img.shields.io/github/issues/platformsh-templates/nextjs-wordpress.svg?style=flat-square&labelColor=f4f2f3&color=ffd9d9&label=Issues" alt="Open issues" />
     </a>&nbsp&nbsp
-    <a href="https://github.com/platformsh-templates/pulls">
+    <a href="https://github.com/platformsh-templates/nextjs-wordpress/pulls/">
         <img src="https://img.shields.io/github/issues-pr/platformsh-templates/nextjs-wordpress.svg?style=flat-square&labelColor=f4f2f3&color=ffd9d9&label=Pull%20requests" alt="Open PRs" />
     </a>&nbsp&nbsp
     <a href="https://github.com/platformsh-templates/nextjs-wordpress/blob/master/LICENSE">

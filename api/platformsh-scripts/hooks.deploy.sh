@@ -3,15 +3,15 @@
 ########################################################################################################################
 # ABOUT:
 #
-# This script has been included to deploy a demo Drupal application, that is seeded with a number of dummy nodes, and
+# This script has been included to deploy a demo WordPress application, that is seeded with a number of dummy posts, and
 #   that is meant to have its API consumed by a frontend Next.js client. Not all pieces of this script will be relevant
-#   for your migration. It's meant to automate steps outlined in the Nextjs-Drupal documentation, which you can follow
-#   manually during your own migration from there (https://next-drupal.org/docs/quick-start).
+#   for your migration. It's meant to automate steps outlined in the Nextjs-WordPress demo, which you can follow
+#   manually during your own migration from there (https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress).
 #
 # When migrating your own site, the only pieces that will not be immediately relevant are those involved with creating
-#   demo content nodes, which is run when the project level environment variable CREATE_DEMO_NODES is set to true in
-#   Drupal's .platform.app.yaml file. If copying these files exactly, you can remove or set to false, and it should
-#   contain everything you need to run Next.js and Drupal across environments.
+#   demo content posts, which is run when the project level environment variable CREATE_DEMO_CONTENT is set to true in
+#   WordPress' .platform.app.yaml file. If copying these files exactly, you can remove or set to false, and it should
+#   contain everything you need to run Next.js and WordPress across environments.
 #
 # It is meant to be run on a Platform.sh environment during the deploy hook.
 #

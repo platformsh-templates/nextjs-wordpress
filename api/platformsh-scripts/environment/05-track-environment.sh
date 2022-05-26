@@ -4,8 +4,8 @@
 #
 # This script tracks settings that have changed related to the the Next.js-WordPress connection for a particular
 #   environment on Platform.sh. Throughout setup, plenty has been updated to ensure that for any given environment,
-#   a unique Next.js app container connects with its own unique Drupal container, and that this relationship is seemless
-#   across branching commits as well as local development work.
+#   a unique Next.js app container connects with its own unique WordPress container, and that this relationship is
+#   seemless across branching commits as well as local development work.
 #
 # Here, a few last minute things are updated:
 #   1) The current frontend URL is updated for the environment.

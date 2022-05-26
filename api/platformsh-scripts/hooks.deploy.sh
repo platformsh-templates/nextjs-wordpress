@@ -51,7 +51,7 @@ else
     $WP_SETUP/project/02-enable-plugins.sh
 
     # 3. Set up permalink structure
-    $WP_SETUP/projects/03-set-permalink-structure.sh
+    $WP_SETUP/project/03-set-permalink-structure.sh
     # 4. Configure content.
     $WP_SETUP/project/04-create-content.sh
 fi
